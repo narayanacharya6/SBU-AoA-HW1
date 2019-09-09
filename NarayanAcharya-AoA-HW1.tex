@@ -58,84 +58,113 @@
     \begin{enumerate}
     \item $\max(f(n), g(n))=\Theta(f(n)+g(n))$. \\
     \textbf{Solution:}
+    Given $f(n)$ and $g(n)$ are non-negative functions we know that:
+    \begin{equation*}
+    \begin{split}
+	    f(n) \le f(n) + g(n) \\
+	    g(n) \le f(n) + g(n) \\
+	\end{split}
+    \end{equation*}
+    Either function is less than the sum of the two functions.
+    \begin{equation*} 
+    \therefore max(f(n), g(n)) \le f(n) + g(n) \\
+    \end{equation*}
+    \begin{equation} \label{eq:1a1}
+        \boxed{max(f(n), g(n)) = O(f(n)+g(n))}
+    \end{equation}
+    
+    Also,
+    \begin{equation*}
+		max(f(n), g(n)) >= \frac{(f(n)+g(n))}{2}
+    \end{equation*}
+    \begin{equation} \label{eq:1a2}
+	    \boxed{max(f(n), g(n)) = \Omega(f(n)+g(n))}
+    \end{equation}
+    
+    From results \ref{eq:1a1} and \ref{eq:1a2},
+    \begin{equation*}
+	    \boxed{max(f(n), g(n)) = \Theta(f(n)+g(n))}
+    \end{equation*}
     
     \item $o(f(n)) \cap \omega(f(n))=\emptyset$. \\
     \textbf{Solution:} $o(f(n))$, by definition, is a function that \textit{grows strictly slower} than $(f(n))$ while $\omega(f(n))$, by definition, is a function that \textit{grows strictly faster} than $f(n)$.
-    \begin{equation} \label{eq:1}
+    \begin{equation} \label{eq:1b1}
     	o(f(n)) < f(n) : \forall n
     \end{equation} 
-    \begin{equation} \label{eq:2}
+    \begin{equation} \label{eq:1b2}
 	    \omega(f(n)) > f(n) : \forall n
     \end{equation}
-	Equations \ref{eq:1} and \ref{eq:2} imply that these functions are on the opposite sides of the tightest possible growth rate function and can never be same or overlap. Therefore, the intersection of these functions is rightly an empty set, $\emptyset$ and the statement \textbf{$o(f(n)) \cap \omega(f(n))=\emptyset$ is true}.
+	Equations \ref{eq:1b1} and \ref{eq:1b2} imply that these functions are on the opposite sides of the tightest possible growth rate function and can never be same or overlap. Therefore, the intersection of these functions is rightly an empty set, $\emptyset$ and the statement \textbf{$o(f(n)) \cap \omega(f(n))=\emptyset$ is true}.
     
     \item $(n+a)^b=\Theta(n^b)$, $a, b$ are positive integers. \\
-    \textbf{Solution:} $(n+a)^b$ is a polynomial of order b. The expression expanded with all its terms will look like this:
-	\begin{equation} \label{eq:3}
+    \textbf{Solution:} $(n+a)^b$ is a polynomial of order b. The expression expanded using Binomial Theorem with all its terms will look like this:
+	\begin{equation} \label{eq:1c1}
 		  (n+a)^b = {b \choose 0}.n^{b}.a^0 + {b \choose 1}.n^{(b-1)}.a^1 + \ldots + {b \choose b}.n^{0}.a^b
 	\end{equation}
 	But we know that for terms where order of n is $ \le b$,
-	\begin{equation} \label{eq:4}
+	\begin{equation} \label{eq:1c2}
 	  {b \choose 1}.n^{(b-1)}.a^1 \leq n \times {b \choose 1}.n^{(b-1)}.a^1 : \forall n \geq 1
 	\end{equation}
-	\begin{equation} \label{eq:5}
+	\begin{equation} \label{eq:1c3}
 		{b \choose 1}.n^{(b-2)}.a^1 \leq n^{2} \times {b \choose 1}.n^{(b-2)}.a^2 : \forall n \geq 1 \ldots
 	\end{equation}
 		
-	Therefore from equations \ref{eq:3}, \ref{eq:4} and \ref{eq:5}we can deduce that, $\forall n \geq 1$, \\
-	\begin{equation} \label{eq:6}
+	Therefore from equations \ref{eq:1c1}, \ref{eq:1c2} and \ref{eq:1c3}we can deduce that, $\forall n \geq 1$, \\
+	\begin{equation*}
 		{b \choose 0}.n^{b}.a^0 + {b \choose 1}.n^{(b-1)}.a^1 + \ldots + {b \choose b}.n^{0}.a^b \le {b \choose 0}.n^{b}.a^0 +  n \times {b \choose 1}.n^{(b-1)}.a^1 + n^{2} \times {b \choose 1}.n^{(b-2)}.a^{2} \ldots
-	\end{equation}
-	\begin{equation} \label{eq:7}
-		\therefore (n+a)^b \le n^{b} \times {b \choose 1}.a^1 + {b \choose 1}.a^{2} \ldots {b \choose b}.a^{b}
-		\end{equation}
-	\begin{equation} \label{eq:8}
-		\therefore (n+a)^b \le c \times n^{b}, c = {b \choose 1}.a^1 + {b \choose 1}.a^{2} \ldots {b \choose b}.a^{b}
-	\end{equation}
-	\begin{equation} \label{eq:9}
+	\end{equation*}
+	\begin{equation*}
+	\begin{split}
+		(n+a)^b & \le n^{b} \times {b \choose 1}.a^1 + {b \choose 1}.a^{2} \ldots {b \choose b}.a^{b} \\
+		& \le c \times n^{b}
+	\end{split}
+	\end{equation*}
+	where $c = {b \choose 1}.a^1 + {b \choose 1}.a^{2} \ldots {b \choose b}.a^{b}$
+	
+	\begin{equation} \label{eq:1c4}
 		\boxed{\therefore (n+a)^b = O(n^{b})}
 	\end{equation}
 	
-	On similar lines, we can also prove $(n+a)^b=\Omega(n^b)$ using the fact that all terms other than of order b contribute positively in equation \ref{eq:3},
-	\begin{equation} \label{eq:10}
+	On similar lines, we can also prove $(n+a)^b=\Omega(n^b)$ using the fact that all terms other than that of order b for n contribute positively in equation \ref{eq:1c1},
+	\begin{equation*}
 		(n+a)^b \ge {b \choose 0}.a^0.n^{b}
-	\end{equation}
-	\begin{equation} \label{eq:11}
+	\end{equation*}
+	\begin{equation} \label{eq:1c5}
 		\boxed{\therefore (n+a)^b=\Omega(n^b)}
 	\end{equation}
 	
-	From equations \ref{eq:9} and \ref{eq:11},
-	\begin{equation} \label{eq:12}
+	From equations \ref{eq:1c4} and \ref{eq:1c5},
+	\begin{equation*}
 		\boxed{(n+a)^b=\Theta(n^b)}
-	\end{equation}
+	\end{equation*}
 	
     \item $f(n)=O(f(n)^2)$. \\
     \textbf{Solution:}
    	Given that $f(n)$ is a non-negative function,
-    \begin{equation} \label{eq:13}
+    \begin{equation*}
 		f(n) \le  c \times f(n) : \forall n \ge n_0, c > 0
-    \end{equation}
-    \begin{equation} \label{eq:14}
+    \end{equation*}
+    \begin{equation*}
 		\therefore f(n)^2 \le  c^2 \times f(n)^2
-	\end{equation}
-	\begin{equation} \label{eq:15}
+	\end{equation*}
+	\begin{equation*}
 		\boxed{\therefore f(n)^2 =  O(f(n)^2)}
-	\end{equation}
+	\end{equation*}
 	$f(n)^2$ may or may not be the tightest bound for $f(n)$ but it is asymptotically upper bound for a non-negative function $f(n)$.
 	
     \item $f(n)=O(g(n))$ implies that $2^{f(n)}=O(2^{g(n)})$. \\
     \textbf{Solution:}
     Say $f(n)=k \times n$, given we have $f(n)=O(g(n))$, $g(n)=n$. \\
-	\begin{equation} \label{eq:16}
+	\begin{equation*}
     \therefore 2^{f(n)} = 2^{(k \times n)}, 2^{g(n)} = 2^n
-    \end{equation}
-    \begin{equation} \label{eq:17}
-    \therefore O(2^{f(n)}) = O(2^{(k \times n)}
-    \end{equation}
-    But, $O(2^{g(n)}) = O(2^{n}) \ne O(2^{(k \times n))}$
-	\begin{equation}
+    \end{equation*}
+    \begin{equation*}
+    \therefore O(2^{f(n)}) = O(2^{(k \times n)})
+    \end{equation*}
+    But, $O(2^{g(n)}) = O(2^{n}) \ne O(2^{(k \times n))} :  \forall k \neq 1$
+	\begin{equation*}
 	    \boxed{\therefore 2^{f(n)} \ne O(2^{g(n)})}
-	\end{equation}
+	\end{equation*}
 
     \end{enumerate}
     
@@ -205,32 +234,39 @@ $n$, $\lg n$, $\sqrt{n}$, $\sqrt{\lg n}$, $\lg \sqrt{n}$, $2^n$, $2^{\sqrt{n}}$,
 	The algorithm loops over i n-times. During each iteration over i it loops over j (n-i)-times. For adding all the elements from A[i] through A[j], there needs to be an additional loop, say with index k,  (j-i+1)-times.
 	
 	The above can be represented as a function of n as:
-	\begin{equation}
+	\begin{equation*}
 		f(n) = \sum_{i=1}^{i=n} {\sum_{j=i+1}^{j=n} \sum_{k=i}^{k=j} {Add!}}
-	\end{equation}
-	
+	\end{equation*}
 	Expanding and simplifying the series: \\ \textit{Note: The 'Add!' operation is considered constant time and hence omitted from the series below as it contributes only a factor of 1 to each term.}
-	\begin{equation}
+	\begin{equation*}
 	\begin{split}
-		f(n) = (n-1).(1) + (n-2).(2) + (n-3).(3) + \ldots + (n-n).(n) \\
+		f(n) & = (n-1).(1) + (n-2).(2) + (n-3).(3) + \ldots + (n-n).(n) \\
 		& = [(n + 2n + 3n + \ldots + n.n) - (1 + 4 + 9 + \ldots + n^2)]
 	\end{split}
-	\end{equation}
-		
+	\end{equation*}
 	Simplifying this equation we get (Using formulas for adding a series n natural numbers and their squares):
-	\begin{equation}
+	\begin{equation*}
 		f(n) = \frac{(n^3 - n)}{6}
-	\end{equation}
-	
+	\end{equation*}
 	The function is a polynomial of the order 3.
-	\begin{equation}
-		\therefore f(n) = O(n^3)
-	\end{equation}
+	\begin{equation*}
+		\boxed{\therefore f(n) = O(n^3)}
+	\end{equation*}
 	
-	\item From previous questions, we know that for a polynomial function, we have $O(f(n)) = \Omega(f(n))$
+	\item To show that $\Omega(f(n)) = n^3 $ we need $\exists c > 0$ for $n \ge n_0$ satisfying $f(n) \ge c \times n^3$. We will find a valid $c$ assuming that the condition holds.
+	\begin{equation*}
+	\begin{split}
+		\therefore \frac{(n^3 - n)}{6} \ge c \times n^3 \\
+		\therefore \frac{(n^3 - n)}{6 \times n^3} \ge c \\
+		\therefore c \le \frac{(n^2 - 1)}{6 \times n^2} \\
+	\end{split}
+	\end{equation*}
+	A valid $c$ exists for all $n > 1$.
+	\begin{equation*}
+		\boxed{\therefore f(n) = \Omega(n^3)}
+	\end{equation*}
 	
 	\item The given algorithm is inefficient as the innermost loop is not needed. Instead of iterating over all elements A[i] through A[j] while adding them, we can keep track of the sum after each iteration over i and use that as our seed for adding as we loop over j. This can be shown in the below algorithm. 
-	
 	\begin{algorithm}[H]
 		\SetAlgoLined
 		\For{i = 1, 2, 3 \ldots n}{
@@ -241,27 +277,23 @@ $n$, $\lg n$, $\sqrt{n}$, $\sqrt{\lg n}$, $\lg \sqrt{n}$, $2^n$, $2^{\sqrt{n}}$,
 			}
 		}
 	\end{algorithm}
-
 	The running time of this algorithm can be represented as a function of n as:
-	\begin{equation}
+	\begin{equation*}
 		g(n) = \sum_{i=1}^{i=n} {\sum_{j=i+1}^{j=n} {Add!}}
-	\end{equation}
-	
+	\end{equation*}
 	Expanding the series:
-	\begin{equation}
+	\begin{equation*}
 	\begin{split}
 		g(n) & = (n-1) + (n-2) + (n-3) + \ldots + (n-n) \\
 		& = (n + n + n + \ldots + n) - (1 + 2 + 3 + \ldots + n)
 	\end{split}
-	\end{equation}
-	
+	\end{equation*}
 	Simplifying this equation we get:
-	\begin{equation}
+	\begin{equation*}
 		g(n) = \frac{(n^2 - n)}{2}
-	\end{equation}
-	
+	\end{equation*}
 	To prove that this algorithm is asymptotically better, we need to prove $lim_{n\to\infty} \frac{g(n)}{f(n)} = 0$.
-	\begin{equation}
+	\begin{equation*}
 	\begin{split}
 		lim_{n\to\infty} \frac{g(n)}{f(n)} & = lim_{n\to\infty} {\frac{\frac{(n^2 - n)}{2}}{\frac{(n^3 - n)}{6}}} \\
 		& = lim_{n\to\infty} {\frac{(n - 1) \times 3}{n^2 - 1}} \\
@@ -269,10 +301,10 @@ $n$, $\lg n$, $\sqrt{n}$, $\sqrt{\lg n}$, $\lg \sqrt{n}$, $2^n$, $2^{\sqrt{n}}$,
 		& = lim_{n\to\infty} {\frac{3}{n + 1}} \\
 		& = 0
 	\end{split}
-	\end{equation}
-	\begin{equation}
+	\end{equation*}
+	\begin{equation*}
 		\therefore lim_{n\to\infty} \frac{g(n)}{f(n)} = 0
-	\end{equation}
+	\end{equation*}
 
 	Hence, proposed algorithm's running time is asymptotically better.
 \end{enumerate}
@@ -285,7 +317,7 @@ $n$, $\lg n$, $\sqrt{n}$, $\sqrt{\lg n}$, $\lg \sqrt{n}$, $2^n$, $2^{\sqrt{n}}$,
 \item What is the running time of \textsc{HeapSort} on $n$ elements in decreasing order?  Represent the running time in big-$\Theta$ notation. (4pts)
 \end{enumerate}
 
-\section{Question 4} \textbf{Young Tableaus} An $m \times n$ Young tableau is an $m\times n$ matrix such that the entries of each row are in increasing order from left to right and the entries of each column are in increasing order from top to bottom. Some of the entries of each column may be $\infty$, which are treated as nonexistent elements. A Young tableau with some elements as $\infty$ is not full. 
+\section{Question 5} \textbf{Young Tableaus} An $m \times n$ Young tableau is an $m\times n$ matrix such that the entries of each row are in increasing order from left to right and the entries of each column are in increasing order from top to bottom. Some of the entries of each column may be $\infty$, which are treated as nonexistent elements. A Young tableau with some elements as $\infty$ is not full. 
 
 Give an algorithm that extracts MIN (i.e., delete the minimum element and restore the matrix to be a Young tableau) on a nonempty $m\times n$ Young tableau that runs in $O(m+n)$ time. 
 
