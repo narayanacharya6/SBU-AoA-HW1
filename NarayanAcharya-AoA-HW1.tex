@@ -36,14 +36,15 @@
 \renewcommand{\headrulewidth}{1pt}
 \renewcommand{\footrulewidth}{1pt}
 
-\title{%
+\title{
 	Analysis of Algorithms - Home Work 1\\[2mm]
 	\large CSE 548 Fall '19\\[1mm]
-	\href{mailto:jgao@cs.stonybrook.edu}{Prof. Jie Gao}
+	\href{mailto:jgao@cs.stonybrook.edu}{\textit{Prof. Jie Gao}}
 }
-\author{%
-	Narayan Acharya \\[1mm] \small \href{mailto:nacharya@cs.stonybrook.edu}{nacharya@cs.stonybrook.edu
-	}
+\author{
+	\small Submission By: \\
+	\href{mailto:nacharya@cs.stonybrook.edu}{Narayan Acharya} \\
+	\small 112734365
 }
 \date{\vspace{-5ex}}
 \begin{document}
@@ -226,7 +227,7 @@ $n$, $\lg n$, $\sqrt{n}$, $\sqrt{\lg n}$, $\lg \sqrt{n}$, $2^n$, $2^{\sqrt{n}}$,
 
 \section{Question 3} Textbook [Kleinberg \& Tardos] Chapter 2, page 67, problem \#6. \\
 
-\textbf{Solution:} 
+\textbf{Solution:}
 
 \begin{enumerate}[(a)]
 	\item The algorithm given in the question has an upper bound of the order $n^3$. This can be proved as follows:
@@ -312,9 +313,30 @@ $n$, $\lg n$, $\sqrt{n}$, $\sqrt{\lg n}$, $\lg \sqrt{n}$, $2^n$, $2^{\sqrt{n}}$,
 \section{Question 4} Recall that in a heap we keep the elements such that the parent is smaller than children. Thus the root (stored as the first element in the array) is the smallest item in the array. Insertion and of a new element can be done in $O(\lg n)$ time. Deletion of an element can be done in $O(\lg n)$ time. Thus one start from an empty heap and insert elements one by one to build a heap of $n$ elements. Further, we can use it to sort $n$ elements. Once the heap is built, we remove the root (the smallest element), which is the smallest of the $n$ elements. Iterate and we will get all $n$ elements output in the increasing sorted order.  This algorithm is called  \textsc{HeapSort}.
  
 \begin{enumerate}
-\item What is the running time for \textsc{HeapSort}? Assume elements come in an arbitrary order and represent the running time in big-O notation. (2pts)
-\item What is the running time of \textsc{HeapSort} on $n$ elements in increasing order? Represent the running time in big-$\Theta$ notation. (4pts)
-\item What is the running time of \textsc{HeapSort} on $n$ elements in decreasing order?  Represent the running time in big-$\Theta$ notation. (4pts)
+\item What is the running time for \textsc{HeapSort}? Assume elements come in an arbitrary order and represent the running time in big-O notation. (2pts) \\
+\textbf{Solution:} 
+
+In order to construct a heap with stable heap-order property for $ n $ elements when they arrive in \textbf{arbitrary} order, we need $O(\log(n))$ operation for each new element that we insert i.e we need $O(n\log(n))$ time to construct the heap.
+
+To sort the elements we need to extract the root element and then \textit{heapify} the heap to enforce heap-order property again for $ n $ elements. The operation will take $O(\log(n))$ for each of the $ n $ elements. Thus, to sort the $ n $ elements we need $O(n\log(n))$ time.
+
+Thus, we need $ O(n\log(n)) $ to construct ($ O(n\log(n)) $) the heap and sort ($ O(n\log(n)) $) it when the elements arrive in arbitrary order. \\
+
+\item What is the running time of \textsc{HeapSort} on $n$ elements in increasing order? Represent the running time in big-$\Theta$ notation. (4pts) \\
+\textbf{Solution:} 
+
+In order to construct a heap with stable heap-order property for $ n $ elements when they arrive in \textbf{ascending} order, we need $O(1)$ operation for each new element as they simply will be added to the end of the heap and heap-order property will be intact. Thus, we need $O(n)$ time to construct the heap.
+
+To sort the elements we need to extract the root element and then \textit{heapify} the heap to enforce heap-order property again for $ n $ elements. The operation will take $O(\log(n))$ for each of the $ n $ elements. Thus, to sort the $ n $ elements we need $O(n\log(n))$ time.
+
+Thus, we need $ O(n\log(n)) $ to construct ($O(n)$) the heap and sort ($O(n\log(n))$) it when the elements arrive in arbitrary order. \\
+
+\item What is the running time of \textsc{HeapSort} on $n$ elements in decreasing order?  Represent the running time in big-$\Theta$ notation. (4pts) \\
+\textbf{Solution:} 
+
+The case when numbers are in \textbf{descending} order is the same as they arrive in arbitrary order, asymptotically speaking. We will need similar operations to construct the heap and extract the elements for sorting.
+
+Thus, we need $ O(n\log(n)) $ to construct ($ O(n\log(n)) $) the heap and sort ($ O(n\log(n)) $) it when the elements arrive in arbitrary order. \\
 \end{enumerate}
 
 \section{Question 5} \textbf{Young Tableaus} An $m \times n$ Young tableau is an $m\times n$ matrix such that the entries of each row are in increasing order from left to right and the entries of each column are in increasing order from top to bottom. Some of the entries of each column may be $\infty$, which are treated as nonexistent elements. A Young tableau with some elements as $\infty$ is not full. 
