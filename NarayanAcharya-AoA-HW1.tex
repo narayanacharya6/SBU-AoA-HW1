@@ -6,6 +6,8 @@
 % Package for new section on new page
 \usepackage{titlesec}
 
+%Package used for formatting lists%
+\usepackage[shortlabels]{enumitem}
 
 % Package used for setting up page margins %
 \usepackage{geometry}
@@ -18,6 +20,9 @@
 % Package for multirow tables %
 \usepackage{multirow}
 \renewcommand{\arraystretch}{1.5}
+
+% Package for displaying algorithms %
+\usepackage{algorithm2e}
 
 % Page Header %
 \usepackage{fancyhdr}
@@ -88,7 +93,7 @@
 		\therefore (n+a)^b \le c \times n^{b}, c = {b \choose 1}.a^1 + {b \choose 1}.a^{2} \ldots {b \choose b}.a^{b}
 	\end{equation}
 	\begin{equation} \label{eq:9}
-		\therefore (n+a)^b = O(n^{b})
+		\boxed{\therefore (n+a)^b = O(n^{b})}
 	\end{equation}
 	
 	On similar lines, we can also prove $(n+a)^b=\Omega(n^b)$ using the fact that all terms other than of order b contribute positively in equation \ref{eq:3},
@@ -96,7 +101,7 @@
 		(n+a)^b \ge {b \choose 0}.a^0.n^{b}
 	\end{equation}
 	\begin{equation} \label{eq:11}
-		\therefore (n+a)^b=\Omega(n^b)
+		\boxed{\therefore (n+a)^b=\Omega(n^b)}
 	\end{equation}
 	
 	From equations \ref{eq:9} and \ref{eq:11},
@@ -190,7 +195,87 @@ $n$, $\lg n$, $\sqrt{n}$, $\sqrt{\lg n}$, $\lg \sqrt{n}$, $2^n$, $2^{\sqrt{n}}$,
 \end{center}
 
 
-\section{Question 3} Textbook [Kleinberg \& Tardos] Chapter 2, page 67, problem \#6.
+\section{Question 3} Textbook [Kleinberg \& Tardos] Chapter 2, page 67, problem \#6. \\
+
+\textbf{Solution:} 
+
+\begin{enumerate}[(a)]
+	\item The algorithm given in the question has an upper bound of the order $n^3$. This can be proved as follows:
+	
+	The algorithm loops over i n-times. During each iteration over i it loops over j (n-i)-times. For adding all the elements from A[i] through A[j], there needs to be an additional loop, say with index k,  (j-i+1)-times.
+	
+	The above can be represented as a function of n as:
+	\begin{equation}
+		f(n) = \sum_{i=1}^{i=n} {\sum_{j=i+1}^{j=n} \sum_{k=i}^{k=j} {Add!}}
+	\end{equation}
+	
+	Expanding and simplifying the series: \\ \textit{Note: The 'Add!' operation is considered constant time and hence omitted from the series below as it contributes only a factor of 1 to each term.}
+	\begin{equation}
+	\begin{split}
+		f(n) = (n-1).(1) + (n-2).(2) + (n-3).(3) + \ldots + (n-n).(n) \\
+		& = [(n + 2n + 3n + \ldots + n.n) - (1 + 4 + 9 + \ldots + n^2)]
+	\end{split}
+	\end{equation}
+		
+	Simplifying this equation we get (Using formulas for adding a series n natural numbers and their squares):
+	\begin{equation}
+		f(n) = \frac{(n^3 - n)}{6}
+	\end{equation}
+	
+	The function is a polynomial of the order 3.
+	\begin{equation}
+		\therefore f(n) = O(n^3)
+	\end{equation}
+	
+	\item From previous questions, we know that for a polynomial function, we have $O(f(n)) = \Omega(f(n))$
+	
+	\item The given algorithm is inefficient as the innermost loop is not needed. Instead of iterating over all elements A[i] through A[j] while adding them, we can keep track of the sum after each iteration over i and use that as our seed for adding as we loop over j. This can be shown in the below algorithm. 
+	
+	\begin{algorithm}[H]
+		\SetAlgoLined
+		\For{i = 1, 2, 3 \ldots n}{
+			sumSoFar = A[i]\;
+			\For{j = i+1, i+2, i+3 \ldots n}{
+				sumSoFar += A[j]\;
+				B[i][j] = sumSoFar\;
+			}
+		}
+	\end{algorithm}
+
+	The running time of this algorithm can be represented as a function of n as:
+	\begin{equation}
+		g(n) = \sum_{i=1}^{i=n} {\sum_{j=i+1}^{j=n} {Add!}}
+	\end{equation}
+	
+	Expanding the series:
+	\begin{equation}
+	\begin{split}
+		g(n) & = (n-1) + (n-2) + (n-3) + \ldots + (n-n) \\
+		& = (n + n + n + \ldots + n) - (1 + 2 + 3 + \ldots + n)
+	\end{split}
+	\end{equation}
+	
+	Simplifying this equation we get:
+	\begin{equation}
+		g(n) = \frac{(n^2 - n)}{2}
+	\end{equation}
+	
+	To prove that this algorithm is asymptotically better, we need to prove $lim_{n\to\infty} \frac{g(n)}{f(n)} = 0$.
+	\begin{equation}
+	\begin{split}
+		lim_{n\to\infty} \frac{g(n)}{f(n)} & = lim_{n\to\infty} {\frac{\frac{(n^2 - n)}{2}}{\frac{(n^3 - n)}{6}}} \\
+		& = lim_{n\to\infty} {\frac{(n - 1) \times 3}{n^2 - 1}} \\
+		& = lim_{n\to\infty} {\frac{(n - 1) \times 3}{(n - 1) \times (n + 1)}} \\
+		& = lim_{n\to\infty} {\frac{3}{n + 1}} \\
+		& = 0
+	\end{split}
+	\end{equation}
+	\begin{equation}
+		\therefore lim_{n\to\infty} \frac{g(n)}{f(n)} = 0
+	\end{equation}
+
+	Hence, proposed algorithm's running time is asymptotically better.
+\end{enumerate}
 
 \section{Question 4} Recall that in a heap we keep the elements such that the parent is smaller than children. Thus the root (stored as the first element in the array) is the smallest item in the array. Insertion and of a new element can be done in $O(\lg n)$ time. Deletion of an element can be done in $O(\lg n)$ time. Thus one start from an empty heap and insert elements one by one to build a heap of $n$ elements. Further, we can use it to sort $n$ elements. Once the heap is built, we remove the root (the smallest element), which is the smallest of the $n$ elements. Iterate and we will get all $n$ elements output in the increasing sorted order.  This algorithm is called  \textsc{HeapSort}.
  
