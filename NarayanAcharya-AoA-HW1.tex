@@ -22,7 +22,8 @@
 \renewcommand{\arraystretch}{1.5}
 
 % Package for displaying algorithms %
-\usepackage{algorithm2e}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 
 % Page Header %
 \usepackage{fancyhdr}
@@ -267,16 +268,18 @@ $n$, $\lg n$, $\sqrt{n}$, $\sqrt{\lg n}$, $\lg \sqrt{n}$, $2^n$, $2^{\sqrt{n}}$,
 		\boxed{\therefore f(n) = \Omega(n^3)}
 	\end{equation*}
 	
-	\item The given algorithm is inefficient as the innermost loop is not needed. Instead of iterating over all elements A[i] through A[j] while adding them, we can keep track of the sum after each iteration over i and use that as our seed for adding as we loop over j. This can be shown in the below algorithm. 
-	\begin{algorithm}[H]
-		\SetAlgoLined
-		\For{i = 1, 2, 3 \ldots n}{
-			sumSoFar = A[i]\;
-			\For{j = i+1, i+2, i+3 \ldots n}{
-				sumSoFar += A[j]\;
-				B[i][j] = sumSoFar\;
-			}
-		}
+	\item The given algorithm is inefficient as the innermost loop is not needed. Instead of iterating over all elements A[i] through A[j] while adding them, we can keep track of the sum after each iteration over i and use that as our seed for adding as we loop over j as shown. \\
+	\begin{algorithm}
+		\caption{Improved algorithm with $ O(n^2) $}
+		\begin{algorithmic}[1]
+			\For{$ i \gets 1, 2, 3 \ldots n $}
+				\State $ sumSoFar \gets A[i] $
+				\For{$ j \gets i+1, i+2, i+3 \ldots n $}
+					\State $ sumSoFar \gets sumSoFar + A[j] $
+					\State $ B[i][j] \gets sumSoFar $
+				\EndFor
+			\EndFor
+		\end{algorithmic}
 	\end{algorithm}
 	The running time of this algorithm can be represented as a function of n as:
 	\begin{equation*}
@@ -336,11 +339,45 @@ Thus, we need $ O(n\log(n)) $ to construct ($O(n)$) the heap and sort ($O(n\log(
 
 The case when numbers are in \textbf{descending} order is the same as they arrive in arbitrary order, asymptotically speaking. We will need similar operations to construct the heap and extract the elements for sorting.
 
-Thus, we need $ O(n\log(n)) $ to construct ($ O(n\log(n)) $) the heap and sort ($ O(n\log(n)) $) it when the elements arrive in arbitrary order. \\
+Thus, we need $ O(n\log(n)) $ to construct ($ O(n\log(n)) $) the heap and sort ($ O(n\log(n)) $) it when the elements arrive in descending order. \\
 \end{enumerate}
 
 \section{Question 5} \textbf{Young Tableaus} An $m \times n$ Young tableau is an $m\times n$ matrix such that the entries of each row are in increasing order from left to right and the entries of each column are in increasing order from top to bottom. Some of the entries of each column may be $\infty$, which are treated as nonexistent elements. A Young tableau with some elements as $\infty$ is not full. 
 
-Give an algorithm that extracts MIN (i.e., delete the minimum element and restore the matrix to be a Young tableau) on a nonempty $m\times n$ Young tableau that runs in $O(m+n)$ time. 
+Give an algorithm that extracts MIN (i.e., delete the minimum element and restore the matrix to be a Young tableau) on a nonempty $m\times n$ Young tableau that runs in $O(m+n)$ time. \\
+
+\textbf{Solution:} Consider the following algorithm to extract minimum from Young Tableau and then restores the Young Tableau property. \\
+
+\begin{algorithm}
+	\caption{Algorithm to extract minimum from Young Tableau with $ m $ rows and $ n $ columns $ O(m+n) $}
+	\begin{algorithmic}[1]
+		\Procedure{ExtractMin}{$YT$}\Comment{Extracts minimum from Young Tableau $YT$}
+			\State $ extractedMin = YT[0][0] $
+			\State $ m \gets len(YT) $ \Comment{$ m $ rows of $ YT $}
+			\State $ n \gets len(YT[0]) $ \Comment{$ n $ columns of $ YT $}
+			\State $ YT[0][0] = YT[m-1][n-1] $ \Comment{Moves largest element to $ YT[0][0] $}
+			\State $ MakeYT(YT, 0, 0) $
+		\EndProcedure
+		
+		\Procedure{MakeYT}{$T$, $ i $, $ j $}\Comment{Restores Young Tableau property of matrix $ T $}
+			\State $ m \gets len(YT) $ \Comment{$ m $ rows of $ YT $}
+			\State $ n \gets len(YT[0]) $ \Comment{$ n $ columns of $ YT $}
+			\If {$i < m$ and $j < n$}
+				\State $ nextRow \gets T[i+1][j] $ if $ i+1 \neq m $ else $ None $
+				\State $ nextCol \gets T[i][j+1] $ if $ j+1 \neq n $ else $ None $
+				
+				\If{$ nextRow = None $ and $ nextCol == None $}
+					\State \Return \Comment{No number to the right or below to compare. Done!}
+				\EndIf
+				
+			\EndIf
+			\State $ extractedMin = YT[0][0] $
+			\State $ m \gets len(YT) $ \Comment{$ m $ rows of $ YT $}
+			\State $ n \gets len(YT[0]) $ \Comment{$ n $ columns of $ YT $}
+			\State $ YT[0][0] = YT[m-1][n-1] $ \Comment{Moves largest element to $ YT[0][0] $}
+			\State $ MakeYT(YT, 0, 0) $
+		\EndProcedure
+	\end{algorithmic}
+\end{algorithm}
 
 \end{document}
