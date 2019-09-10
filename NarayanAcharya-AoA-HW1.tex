@@ -346,38 +346,62 @@ Thus, we need $ O(n\log(n)) $ to construct ($ O(n\log(n)) $) the heap and sort (
 
 Give an algorithm that extracts MIN (i.e., delete the minimum element and restore the matrix to be a Young tableau) on a nonempty $m\times n$ Young tableau that runs in $O(m+n)$ time. \\
 
-\textbf{Solution:} Consider the following algorithm to extract minimum from Young Tableau and then restores the Young Tableau property. \\
+\textbf{Solution:} 
 
-\begin{algorithm}
-	\caption{Algorithm to extract minimum from Young Tableau with $ m $ rows and $ n $ columns $ O(m+n) $}
-	\begin{algorithmic}[1]
-		\Procedure{ExtractMin}{$YT$}\Comment{Extracts minimum from Young Tableau $YT$}
-			\State $ extractedMin = YT[0][0] $
-			\State $ m \gets len(YT) $ \Comment{$ m $ rows of $ YT $}
-			\State $ n \gets len(YT[0]) $ \Comment{$ n $ columns of $ YT $}
-			\State $ YT[0][0] = YT[m-1][n-1] $ \Comment{Moves largest element to $ YT[0][0] $}
-			\State $ MakeYT(YT, 0, 0) $
-		\EndProcedure
-		
-		\Procedure{MakeYT}{$T$, $ i $, $ j $}\Comment{Restores Young Tableau property of matrix $ T $}
-			\State $ m \gets len(YT) $ \Comment{$ m $ rows of $ YT $}
-			\State $ n \gets len(YT[0]) $ \Comment{$ n $ columns of $ YT $}
-			\If {$i < m$ and $j < n$}
-				\State $ nextRow \gets T[i+1][j] $ if $ i+1 \neq m $ else $ None $
-				\State $ nextCol \gets T[i][j+1] $ if $ j+1 \neq n $ else $ None $
-				
-				\If{$ nextRow = None $ and $ nextCol == None $}
-					\State \Return \Comment{No number to the right or below to compare. Done!}
-				\EndIf
-				
+For a Young Tableau, with $ m $ and $ n $ columns, we extract the smallest number from the $ (0,0) $ index of the matrix and move the highest number from index $ (m-1, n-1) $ index in its place. We then try to use recursion to move this largest number from $ (0,0) $ to its appropriate index in order to restore the Young Tableau property. \\
+
+Notice that each recursive call moves the largest number (the one that we moved to $ (0,0) $) one step closer to its intended position by comparing it with the next row below and/or column to the right. Worst case, we need to move the largest number from $ (0,0) $ back to its original index $ (m-1, n-1) $. We end up moving making $ m+n $ moves (or recursive calls) to get this done. Therefore this algorithm to extract the minimum is bound by $ O(m+n) $. \\
+
+Consider the following algorithm to extract minimum from Young Tableau and then restores the Young Tableau property. \\
+
+\begin{algorithmic}[1]
+	\Procedure{ExtractMin}{$YT$}\Comment{Extracts minimum from Young Tableau $YT$}
+		\State $ extractedMin = YT[0][0] $
+		\State $ YT[0][0] = YT[len(YT)-1][len(YT[0]-1] $ \Comment{Moves largest element to $ YT[0][0] $}
+		\State $ MakeYT(YT, 0, 0) $
+		\State \Return $ extractedMin $
+	\EndProcedure \\
+	
+	\Procedure{MakeYT}{$T$, $ i $, $ j $}\Comment{Restores Young Tableau property of matrix $ T $}
+		\State $ m \gets len(T) $ \Comment{$ m $ rows of $ YT $}
+		\State $ n \gets len(T[0]) $ \Comment{$ n $ columns of $ YT $}
+		\If {$i < m$ and $j < n$}
+			\State $ current \gets T[i][j] $
+			\Comment{Check if next row or column exist and assign}
+			\State $ nextRow \gets T[i+1][j] $ if $ i+1 \neq m $ else $ None $
+			\State $ nextCol \gets T[i][j+1] $ if $ j+1 \neq n $ else $ None $
+			
+			\If{$ nextRow = None $ and $ nextCol = None $}
+				\State \Return \Comment{No number to the right or below to compare. Done!}
 			\EndIf
-			\State $ extractedMin = YT[0][0] $
-			\State $ m \gets len(YT) $ \Comment{$ m $ rows of $ YT $}
-			\State $ n \gets len(YT[0]) $ \Comment{$ n $ columns of $ YT $}
-			\State $ YT[0][0] = YT[m-1][n-1] $ \Comment{Moves largest element to $ YT[0][0] $}
-			\State $ MakeYT(YT, 0, 0) $
-		\EndProcedure
-	\end{algorithmic}
-\end{algorithm}
+			
+			\Comment{We have 2 number to choose from}
+			\If{$ nextRow \neq None $ and $ nextCol \neq None $} 
+				\If{$ nextRow \ge nextCol $ and $ nextRow > current $} \Comment{Swap with next row}
+					\State $ T[i][j] \gets nextRow $
+					\State $ T[i+1][j] \gets current $
+					\State $ MakeYT(T, i+1, j) $
+				\Else \Comment{Swap with next column}
+					\State $ T[i][j] \gets nextCol $
+					\State $ T[i][j+1] \gets current $
+					\State $ MakeYT(T, i, j+1) $
+				\EndIf
+			\EndIf
+			
+			\Comment{Only one of next row or column available}
+			
+			\If{$ nextCol = None $ and $ nextRow > current $} 
+				\State $ T[i][j] \gets nextRow $
+				\State $ T[i+1][j] \gets current $
+				\State $ MakeYT(T, i+1, j) $
+			\Else \If{$ nextRow = None $ and $ nextCol > current $}
+				\State $ T[i][j] \gets nextCol $
+				\State $ T[i][j+1] \gets current $
+				\State $ MakeYT(T, i, j+1) $
+				\EndIf
+			\EndIf			
+		\EndIf
+	\EndProcedure
+\end{algorithmic}
 
 \end{document}
