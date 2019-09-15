@@ -24,6 +24,9 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 
+% Package for Bib in ToC %
+\usepackage[nottoc]{tocbibind}
+
 % Break algorithm across pages %
 \makeatletter
 \newenvironment{breakablealgorithm}
@@ -431,6 +434,8 @@ Consider the following algorithm that extracts minimum from Young Tableau matrix
 \end{breakablealgorithm}
 
 \clearpage
+
+\bibliographystyle{unsrt}
 \begin{thebibliography}{9}
 	\bibitem{BinomialTheorem} 
 	Binomial Theorem,
