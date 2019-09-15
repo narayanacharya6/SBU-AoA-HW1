@@ -1,7 +1,6 @@
 \documentclass[11pt]{article}
 % Packages used by instructor %
 \usepackage{amsmath,amssymb,xspace,epsfig}
-\newcommand{\sectionbreak}{\clearpage}
 
 % Package for new section on new page
 \usepackage{titlesec}
@@ -76,20 +75,24 @@
 \maketitle
 \thispagestyle{fancy} % Make this page use fancy header
 
+% Set up Table of Contents
+\tableofcontents
+
+\clearpage
+
 \section{Question 1}
 
 \textbf{Big-O notation (10pts)} Prove or disprove (i.e., give counter examples) for the following claims. $f(n), g(n)$ are non-negative functions.
     \begin{enumerate}
     \item $\max(f(n), g(n))=\Theta(f(n)+g(n))$. \\
     \textbf{Solution:}
-    Given $f(n)$ and $g(n)$ are non-negative functions we know that:
+    Given $f(n)$ and $g(n)$ are non-negative functions, either function is less than the sum of the two functions:
     \begin{equation*}
     \begin{split}
 	    f(n) \le f(n) + g(n) \\
 	    g(n) \le f(n) + g(n) \\
 	\end{split}
     \end{equation*}
-    Either function is less than the sum of the two functions.
     \begin{equation*} 
     \therefore max(f(n), g(n)) \le f(n) + g(n) \\
     \end{equation*}
@@ -97,7 +100,7 @@
         \boxed{max(f(n), g(n)) = O(f(n)+g(n))}
     \end{equation}
     
-    Also,
+    Also the max will be greater than the average of the two functions,
     \begin{equation*}
 		max(f(n), g(n)) >= \frac{(f(n)+g(n))}{2}
     \end{equation*}
@@ -111,21 +114,21 @@
     \end{equation*}
     
     \item $o(f(n)) \cap \omega(f(n))=\emptyset$. \\
-    \textbf{Solution:} $o(f(n))$, by definition, is a function that \textit{grows strictly slower} than $(f(n))$ while $\omega(f(n))$, by definition, is a function that \textit{grows strictly faster} than $f(n)$.
+    \textbf{Solution:} $o(f(n))$, by definition, is a function that \textit{grows strictly slower} than $f(n)$ while $\omega(f(n))$, by definition, is a function that \textit{grows strictly faster} than $f(n)$.
     \begin{equation} \label{eq:1b1}
     	o(f(n)) < f(n) : \forall n
     \end{equation} 
     \begin{equation} \label{eq:1b2}
 	    \omega(f(n)) > f(n) : \forall n
     \end{equation}
-	Equations \ref{eq:1b1} and \ref{eq:1b2} imply that these functions are on the opposite sides of the tightest possible growth rate function and can never be same or overlap. Therefore, the intersection of these functions is rightly an empty set, $\emptyset$ and the statement \textbf{$o(f(n)) \cap \omega(f(n))=\emptyset$ is true}.
+	Equations \ref{eq:1b1} and \ref{eq:1b2} imply that these functions are on the opposite sides of the tightest possible growth rate function for $f(n)$ and can never be same or overlap. Therefore, the intersection of these functions is rightly an empty set, $\emptyset$ and the statement \textbf{$o(f(n)) \cap \omega(f(n))=\emptyset$ is true}.
     
     \item $(n+a)^b=\Theta(n^b)$, $a, b$ are positive integers. \\
-    \textbf{Solution:} $(n+a)^b$ is a polynomial of order b. The expression expanded using Binomial Theorem with all its terms will look like this:
+    \textbf{Solution:} $(n+a)^b$ is a polynomial of order b. The expression expanded using Binomial Theorem\cite{BinomialTheorem} with all its terms will look like this:
 	\begin{equation} \label{eq:1c1}
 		  (n+a)^b = {b \choose 0}.n^{b}.a^0 + {b \choose 1}.n^{(b-1)}.a^1 + \ldots + {b \choose b}.n^{0}.a^b
 	\end{equation}
-	But we know that for terms where order of n is $ \le b$,
+	Given $ n \ge 1 $, for terms in equation \ref{eq:1c1} where order of n is $ \le b$ we have,
 	\begin{equation} \label{eq:1c2}
 	  {b \choose 1}.n^{(b-1)}.a^1 \leq n \times {b \choose 1}.n^{(b-1)}.a^1 : \forall n \geq 1
 	\end{equation}
@@ -139,7 +142,7 @@
 	\end{equation*}
 	\begin{equation*}
 	\begin{split}
-		(n+a)^b & \le n^{b} \times {b \choose 1}.a^1 + {b \choose 1}.a^{2} \ldots {b \choose b}.a^{b} \\
+		(n+a)^b & \le n^{b} \times \left[{b \choose 1}.a^1 + {b \choose 1}.a^{2} \ldots {b \choose b}.a^{b}\right] \\
 		& \le c \times n^{b}
 	\end{split}
 	\end{equation*}
@@ -151,13 +154,13 @@
 	
 	On similar lines, we can also prove $(n+a)^b=\Omega(n^b)$ using the fact that all terms other than that of order b for n contribute positively in equation \ref{eq:1c1},
 	\begin{equation*}
-		(n+a)^b \ge {b \choose 0}.a^0.n^{b}
+		\therefore (n+a)^b \ge {b \choose 0}.a^0.n^{b}
 	\end{equation*}
 	\begin{equation} \label{eq:1c5}
 		\boxed{\therefore (n+a)^b=\Omega(n^b)}
 	\end{equation}
 	
-	From equations \ref{eq:1c4} and \ref{eq:1c5},
+	From equations \ref{eq:1c4} and \ref{eq:1c5} we have,
 	\begin{equation*}
 		\boxed{(n+a)^b=\Theta(n^b)}
 	\end{equation*}
@@ -178,7 +181,10 @@
 	
     \item $f(n)=O(g(n))$ implies that $2^{f(n)}=O(2^{g(n)})$. \\
     \textbf{Solution:}
-    Say $f(n)=k \times n$, given we have $f(n)=O(g(n))$, $g(n)=n$. \\
+    Say $f(n)=k \times n$, given we have $f(n)=O(g(n))$, \\
+	\begin{equation*}
+	\therefore g(n)=n
+	\end{equation*}
 	\begin{equation*}
     \therefore 2^{f(n)} = 2^{(k \times n)}, 2^{g(n)} = 2^n
     \end{equation*}
@@ -192,7 +198,7 @@
 
     \end{enumerate}
     
-
+\clearpage
 \section{Question 2}
 
 Sort the following functions from asymptotically smallest to asymptotically largest. That is, the function $f(n)$ and the next function $g(n)$ must always follow that $f(n) \in O(g(n))$. If the two functions have asymptotic the same order, i.e., $f(n)=\Theta(g(n))$, then also indicate that. No need to write down proofs.  Remember $\lg n=\log_2 n$.
@@ -247,7 +253,7 @@ $n$, $\lg n$, $\sqrt{n}$, $\sqrt{\lg n}$, $\lg \sqrt{n}$, $2^n$, $2^{\sqrt{n}}$,
 	\end{tabular}
 \end{center}
 
-
+\clearpage
 \section{Question 3} Textbook [Kleinberg \& Tardos] Chapter 2, page 67, problem \#6. \\
 
 \textbf{Solution:}
@@ -335,17 +341,18 @@ $n$, $\lg n$, $\sqrt{n}$, $\sqrt{\lg n}$, $\lg \sqrt{n}$, $2^n$, $2^{\sqrt{n}}$,
 	Hence, proposed algorithm's running time is asymptotically better.
 \end{enumerate}
 
+\clearpage
 \section{Question 4} Recall that in a heap we keep the elements such that the parent is smaller than children. Thus the root (stored as the first element in the array) is the smallest item in the array. Insertion and of a new element can be done in $O(\lg n)$ time. Deletion of an element can be done in $O(\lg n)$ time. Thus one start from an empty heap and insert elements one by one to build a heap of $n$ elements. Further, we can use it to sort $n$ elements. Once the heap is built, we remove the root (the smallest element), which is the smallest of the $n$ elements. Iterate and we will get all $n$ elements output in the increasing sorted order.  This algorithm is called  \textsc{HeapSort}.
  
 \begin{enumerate}
 \item What is the running time for \textsc{HeapSort}? Assume elements come in an arbitrary order and represent the running time in big-O notation. (2pts) \\
 \textbf{Solution:} 
 
-In order to construct a heap with stable heap-order property for $ n $ elements when they arrive in \textbf{arbitrary} order, we need $O(\log(n))$ operation for each new element that we insert i.e we need $O(n\log(n))$ time to construct the heap.
+In order to construct a heap with stable heap-order property for $ n $ elements when they arrive in \textbf{arbitrary} order, we need $O(\log(n))$ operations for each new element that we insert i.e we need $O(n\log(n))$ time to construct the heap.
 
 To sort the elements we need to extract the root element and then \textit{heapify} the heap to enforce heap-order property again for $ n $ elements. The operation will take $O(\log(n))$ for each of the $ n $ elements. Thus, to sort the $ n $ elements we need $O(n\log(n))$ time.
 
-Thus, we need $ O(n\log(n)) $ to construct ($ O(n\log(n)) $) the heap and sort ($ O(n\log(n)) $) it when the elements arrive in arbitrary order. \\
+Thus, we need $ O(n\log(n)) $ to construct the heap and sort it when the elements arrive in arbitrary order. \\
 
 \item What is the running time of \textsc{HeapSort} on $n$ elements in increasing order? Represent the running time in big-$\Theta$ notation. (4pts) \\
 \textbf{Solution:} 
@@ -354,32 +361,33 @@ In order to construct a heap with stable heap-order property for $ n $ elements 
 
 To sort the elements we need to extract the root element and then \textit{heapify} the heap to enforce heap-order property again for $ n $ elements. The operation will take $O(\log(n))$ for each of the $ n $ elements. Thus, to sort the $ n $ elements we need $O(n\log(n))$ time.
 
-Thus, we need $ O(n\log(n)) $ to construct ($O(n)$) the heap and sort ($O(n\log(n))$) it when the elements arrive in arbitrary order. \\
+Thus, we need $ O(n\log(n)) $ to construct the heap and sort it when the elements arrive in ascending order. \\
 
 \item What is the running time of \textsc{HeapSort} on $n$ elements in decreasing order?  Represent the running time in big-$\Theta$ notation. (4pts) \\
 \textbf{Solution:} 
 
 The case when numbers are in \textbf{descending} order is the same as they arrive in arbitrary order, asymptotically speaking. We will need similar operations to construct the heap and extract the elements for sorting.
 
-Thus, we need $ O(n\log(n)) $ to construct ($ O(n\log(n)) $) the heap and sort ($ O(n\log(n)) $) it when the elements arrive in descending order. \\
+Thus, we need $ O(n\log(n)) $ to construct the heap and sort it when the elements arrive in descending order. \\
 \end{enumerate}
 
+\clearpage
 \section{Question 5} \textbf{Young Tableaus} An $m \times n$ Young tableau is an $m\times n$ matrix such that the entries of each row are in increasing order from left to right and the entries of each column are in increasing order from top to bottom. Some of the entries of each column may be $\infty$, which are treated as nonexistent elements. A Young tableau with some elements as $\infty$ is not full. 
 
 Give an algorithm that extracts MIN (i.e., delete the minimum element and restore the matrix to be a Young tableau) on a nonempty $m\times n$ Young tableau that runs in $O(m+n)$ time. \\
 
 \textbf{Solution:} 
 
-For a Young Tableau, with $ m $ rows and $ n $ columns, we extract the smallest number from the $ (0,0) $ index of the matrix and move the largest number from index $ (m-1, n-1) $ index in its place. We then try to use recursion to move this largest number, now at $ (0,0) $, to its appropriate index in order to restore the Young Tableau property. \\
+For a Young Tableau, with $ m $ rows and $ n $ columns, we extract the smallest number from the $ (0,0) $ index and put $\infty$ in its place.  We then try to use recursion and move this $\infty$, now at $ (0,0) $, to its appropriate index in order to restore the Young Tableau property\cite{YoungTableau}. \\
 
-Consider the following algorithm that extracts minimum from Young Tableau matrix and then restores the Young Tableau property. Notice that each recursive call moves the largest number (the one that we moved to $ (0,0) $) one step closer to its intended position by comparing it with the next row below and/or column to the right. Worst case, we need to move the largest number from $ (0,0) $ back to its original index $ (m-1, n-1) $. In this case we end up moving making $ m+n $ moves (or recursive calls) to get this done. Therefore this algorithm to extract the minimum is bound by $ O(m+n) $. \\
+Consider the following algorithm that extracts minimum from Young Tableau matrix and then restores the Young Tableau property. Notice that each recursive call moves the largest number (the one that we moved to $ (0,0) $) one step closer to its intended position by comparing it with the next row below and/or column to the right. Worst case, we need to move the largest number from $ (0,0) $ to end of the matrix at index $ (m-1, n-1) $. In this case we end up moving making $ m+n $ moves (or recursive calls) to get this done. Therefore, this algorithm is bound by $ O(m+n) $ to extract the minimum value out of it. \\
 
 \begin{breakablealgorithm}
 \caption{Algorithm to extract minimum from Young Tableau}
 \begin{algorithmic}[1]
 	\Procedure{ExtractMin}{$YT$}\Comment{Extracts minimum from Young Tableau $YT$}
 		\State $ extractedMin = YT[0][0] $
-		\State $ YT[0][0] = YT[len(YT)-1][len(YT[0]-1] $ \Comment{Moves largest element to $ YT[0][0] $}
+		\State $ YT[0][0] = \infty $
 		\State $ MakeYT(YT, 0, 0) $
 		\State \Return $ extractedMin $
 	\EndProcedure		
@@ -393,8 +401,8 @@ Consider the following algorithm that extracts minimum from Young Tableau matrix
 			\State $ nextCol \gets T[i][j+1] $ if $ j+1 \neq n $ else $ None $
 			\If{$ nextRow = None $ and $ nextCol = None $}
 				\State \Return \Comment{No number to the right or below to compare. Done!}
-		\EndIf
-		\Comment{We have 2 number to choose from}
+		\EndIf \\
+		\Comment{We have 2 numbers to choose from}
 		\If{$ nextRow \neq None $ and $ nextCol \neq None $} 
 			\If{$ nextRow \ge nextCol $ and $ nextRow > current $} \Comment{Swap with next row}
 				\State $ T[i][j] \gets nextRow $
@@ -405,7 +413,7 @@ Consider the following algorithm that extracts minimum from Young Tableau matrix
 				\State $ T[i][j+1] \gets current $
 				\State $ MakeYT(T, i, j+1) $
 			\EndIf
-		\EndIf			
+		\EndIf \\
 		\Comment{Only one of next row or column available}
 		\If{$ nextCol = None $ and $ nextRow > current $} 
 			\State $ T[i][j] \gets nextRow $
@@ -421,4 +429,17 @@ Consider the following algorithm that extracts minimum from Young Tableau matrix
 	\EndProcedure
 \end{algorithmic}
 \end{breakablealgorithm}
+
+\clearpage
+\begin{thebibliography}{9}
+	\bibitem{BinomialTheorem} 
+	Binomial Theorem,
+	\\\texttt{https://en.wikipedia.org/wiki/Binomial\_theorem}
+	
+	\bibitem{YoungTableau} 
+	Young Tableau,
+	\\\texttt{https://en.wikipedia.org/wiki/Young\_tableau}
+	
+\end{thebibliography}
+
 \end{document}
