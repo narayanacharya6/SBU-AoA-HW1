@@ -360,18 +360,18 @@ Thus, we need $ O(n\log(n)) $ to construct the heap and sort it when the element
 \item What is the running time of \textsc{HeapSort} on $n$ elements in increasing order? Represent the running time in big-$\Theta$ notation. (4pts) \\
 \textbf{Solution:} 
 
-In order to construct a heap with stable heap-order property for $ n $ elements when they arrive in \textbf{ascending} order, we need $O(1)$ operation for each new element as they simply will be added to the end of the heap and heap-order property will be intact. Thus, we need $O(n)$ time to construct the heap.
+In order to construct a heap with stable heap-order property for $ n $ elements when they arrive in \textbf{ascending} order, we need $\Theta(1)$ operation for each new element as they simply will be added to the end of the heap and heap-order property will be intact. Thus, we need $\Theta(n)$ time to construct the heap.
 
-To sort the elements we need to extract the root element and then \textit{heapify} the heap to enforce heap-order property again for $ n $ elements. The operation will take $O(\log(n))$ for each of the $ n $ elements. Thus, to sort the $ n $ elements we need $O(n\log(n))$ time.
+To sort the elements we need to extract the root element and then \textit{heapify} the heap to enforce heap-order property again for $ n $ elements. The operation will take $\Theta(\log(n))$ for each of the $ n $ elements. Thus, to sort the $ n $ elements we need $\Theta(n\log(n))$ time.
 
-Thus, we need $ O(n\log(n)) $ to construct the heap and sort it when the elements arrive in ascending order. \\
+Thus, we need $ \Theta(n\log(n)) $ to construct the heap and sort it when the elements arrive in ascending order. \\
 
 \item What is the running time of \textsc{HeapSort} on $n$ elements in decreasing order?  Represent the running time in big-$\Theta$ notation. (4pts) \\
 \textbf{Solution:} 
 
 The case when numbers are in \textbf{descending} order is the same as they arrive in arbitrary order, asymptotically speaking. We will need similar operations to construct the heap and extract the elements for sorting.
 
-Thus, we need $ O(n\log(n)) $ to construct the heap and sort it when the elements arrive in descending order. \\
+Thus, we need $ \Theta(n\log(n)) $ to construct the heap and sort it when the elements arrive in descending order. \\
 \end{enumerate}
 
 \clearpage
